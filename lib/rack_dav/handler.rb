@@ -17,8 +17,13 @@ module RackDAV
     def initialize(options = {})
       @options = {
         :resource_class => FileResource,
+        :controller_class  => Controller,
         :root => Dir.pwd
       }.merge(options)
+    end
+
+    def controller_class
+      return @options[:controller_class]
     end
 
     def call(env)
@@ -26,9 +31,8 @@ module RackDAV
       response = Rack::Response.new
 
       begin
-        controller = Controller.new(request, response, @options)
+        controller = controller_class.new(request,response, @options)
         controller.send(request.request_method.downcase)
-
       rescue HTTPStatus::Status => status
         response.status = status.code
       end
