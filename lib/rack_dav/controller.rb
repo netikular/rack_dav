@@ -181,7 +181,6 @@ module RackDAV
         end
       end
 
-      resource.save
     end
 
     def lock
