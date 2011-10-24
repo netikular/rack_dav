@@ -93,7 +93,6 @@ module RackDAV
       dest_uri = URI.parse(env['HTTP_DESTINATION'])
       destination = url_unescape(dest_uri.path)
 
-      raise BadGateway if dest_uri.host and dest_uri.host != request.host
       raise Forbidden if destination == resource.path
 
       dest = resource_class.new(destination, @options)
@@ -120,7 +119,6 @@ module RackDAV
       dest_uri = URI.parse(env['HTTP_DESTINATION'])
       destination = url_unescape(dest_uri.path)
 
-      raise BadGateway if dest_uri.host and dest_uri.host != request.host
       raise Forbidden if destination == resource.path
 
       dest = resource_class.new(destination, @options)
