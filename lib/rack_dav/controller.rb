@@ -1,3 +1,4 @@
+# encoding UTF-8
 module RackDAV
 
   class Controller
@@ -14,15 +15,11 @@ module RackDAV
     end
 
     def url_escape(s)
-      s.gsub(/([^\/a-zA-Z0-9_.-]+)/n) do
-        '%' + $1.unpack('H2' * $1.size).join('%').upcase
-      end.tr(' ', '+')
+      URI.encode(s).force_encoding("UTF-8")
     end
 
     def url_unescape(s)
-      s.tr('+', ' ').gsub(/((?:%[0-9a-fA-F]{2})+)/n) do
-        [$1.delete('%')].pack('H*')
-      end
+      URI.decode(s)
     end
 
     def options

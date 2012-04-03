@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 require 'fileutils'
 
@@ -18,7 +20,8 @@ end
 
 describe RackDAV::Handler do
 
-  DOC_ROOT = File.expand_path(File.dirname(__FILE__) + '/htdocs')
+  DOC_ROOT = '' + File.expand_path(File.dirname(__FILE__) + '/htdocs')
+
   METHODS = %w(GET PUT POST DELETE PROPFIND PROPPATCH MKCOL COPY MOVE OPTIONS HEAD LOCK UNLOCK)
   CLASS_2 = METHODS
   CLASS_1 = CLASS_2 - %w(LOCK UNLOCK)
@@ -205,6 +208,12 @@ describe RackDAV::Handler do
       response.body.should == 'body'
     end
 
+    it 'should create and find a url with UTF-8 characters', focus: true do
+      put(url_escape('/résumé'), :input => 'body').should be_ok
+      get(url_escape('/résumé')).should be_ok
+      response.body.should == 'body'
+    end
+
     it 'should delete a single resource' do
       put('/test', :input => 'body').should be_ok
       delete('/test').should be_no_content
@@ -384,9 +393,7 @@ describe RackDAV::Handler do
     end
 
     def url_escape(string)
-      string.gsub(/([^ a-zA-Z0-9_.-]+)/n) do
-        '%' + $1.unpack('H2' * $1.size).join('%').upcase
-      end.tr(' ', '+')
+      URI.encode(string).force_encoding("UTF-8")
     end
 
     def response_xml

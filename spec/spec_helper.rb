@@ -1,3 +1,7 @@
+# encoding: utf-8
+require 'rubygems'
+require 'bundler/setup'
+Bundler.require(:default)
 require 'rspec'
 require 'rack_dav'
 

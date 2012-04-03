@@ -1,3 +1,4 @@
+# encoding: utf-8
 module RackDAV
 
   # Holds information about library version.

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module RackDAV
 
   class FileResource < Resource
@@ -155,7 +156,7 @@ module RackDAV
       end
 
       def file_path
-        root + '/' + path
+        File.join(root,path)
       end
 
       def stat
